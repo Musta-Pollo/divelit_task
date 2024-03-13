@@ -1,16 +1,11 @@
-# divelit_task
+# Divelit DU
 
-A new Flutter project.
+## Initial Design From Figma
 
-## Getting Started
+- <https://www.figma.com/file/1Zn3T2oNGEmSmQ4tzwFiv7/Divelit---DU?type=design&node-id=0-1&mode=design&t=tTTChOcJxLhU9ni4-0>
 
-This project is a starting point for a Flutter application.
+## Things To Keep In Mind
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- The requirements are not clear, so it was more or less free style. In a real scenario, I would ask for more details. And then it would be much more optimalized for that use-case. It would work and look much better.
+- The application was initialy design for mobile and then adapted for desktop.
+- I focused mostly on the architecture, state managemend and clean code. The UI and UX was not my primary focus.
