@@ -18,7 +18,7 @@ class PickStartAndEnd extends _$PickStartAndEnd {
     state = state.copyWith(
       start: newStart,
       end: newStart.isAfter(state.end)
-          // TODO: Depends on the requirements.
+          //Depends on the requirements.
           ? newStart.add(const Duration(minutes: 5))
           : state.end,
     );
@@ -49,6 +49,7 @@ class PickStartAndEnd extends _$PickStartAndEnd {
     if (state.sliderMode == SliderMode.nothing) _changeSliderModeStart();
     //It is truncated to minutes to eliminate noise
     final now = DateTime.now().truncateToMinute;
+    // Handling edge case, when the percentage is 0.0
     if (percentage == 0.0) {
       state = state.copyWith(
         start: now,
@@ -61,9 +62,7 @@ class PickStartAndEnd extends _$PickStartAndEnd {
       final addToNow = (diff.inMicroseconds * (1 - percentage)) ~/ percentage;
       state = state.copyWith(
           end: now.add(
-        Duration(
-            // ignore: division_optimization
-            microseconds: addToNow),
+        Duration(microseconds: addToNow),
       ));
     } else if (state.sliderMode == SliderMode.startAfterNow) {
       // 1 - percentage

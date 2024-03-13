@@ -5,7 +5,18 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'pick_start_end_class.freezed.dart';
 
-enum SliderMode { startBeforeNow, startAfterNow, nothing }
+enum SliderMode {
+  /// Means that when the user started to drag the slider,
+  /// the start time was before now. And the end time will be changed on drag
+  startBeforeNow,
+
+  /// Means that when the user started to drag the slider,
+  /// the start time was after now. And the start time will be changed on drag
+  startAfterNow,
+
+  /// Means that the slider is not active
+  nothing;
+}
 
 @freezed
 class PickStartEndClass with _$PickStartEndClass {
@@ -41,7 +52,7 @@ class PickStartEndClass with _$PickStartEndClass {
       final diff = start.difference(now).abs();
       final endDiff = end.difference(start).abs();
       final res = diff.inMicroseconds / endDiff.inMicroseconds;
-      print("Count $res");
+      // Just in case
       return math.min(1.0, res);
     }
     return 0.0;

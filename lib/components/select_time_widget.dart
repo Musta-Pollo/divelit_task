@@ -37,7 +37,6 @@ class SelectTimeWidget extends ConsumerWidget {
         vertical: 16,
       ),
       decoration: BoxDecoration(
-        // color: const Color(0xff373743),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: const Color(0xffffa6a6cb).withOpacity(0.3),
@@ -97,7 +96,6 @@ class SelectTimeWidget extends ConsumerWidget {
             },
             child: Container(
               decoration: BoxDecoration(
-                // color: const Color.fromARGB(255, 28, 28, 31),
                 borderRadius: BorderRadius.circular(8),
                 color: Colors.white.withOpacity(0.05),
                 border:
@@ -108,7 +106,7 @@ class SelectTimeWidget extends ConsumerWidget {
                 vertical: 8,
               ),
               child: Text(
-                "Change",
+                "Change ${timeType.name}",
                 style: GoogleFonts.nunito(
                   fontSize: 14,
                   fontWeight: FontWeight.w700,
