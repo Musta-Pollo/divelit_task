@@ -21,14 +21,17 @@ class PercentIndicator extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       children: <Widget>[
-        ResponsiveBuilder(builder: (context, sizingInformation) {
+        ResponsiveBuilder(builder: (context, constraints) {
+          final isTabletOrBigger = constraints.deviceScreenType.index >=
+              DeviceScreenType.tablet.index;
+
           return Column(
             children: [
               Text(
                 "${(percentage * 100).toStringAsFixed(1)}%",
                 style: GoogleFonts.nunito(
                   fontWeight: FontWeight.w900,
-                  fontSize: 40,
+                  fontSize: isTabletOrBigger ? 50 : 40,
                   color: Colors.white,
                 ),
               ),
@@ -37,7 +40,7 @@ class PercentIndicator extends ConsumerWidget {
                 "Current Time",
                 style: GoogleFonts.nunito(
                   fontWeight: FontWeight.w800,
-                  fontSize: 14,
+                  fontSize: isTabletOrBigger ? 16 : 14,
                   color: Colors.white.withOpacity(0.6),
                 ),
               ),
@@ -49,7 +52,7 @@ class PercentIndicator extends ConsumerWidget {
                     DateTime.now().formatted,
                     style: GoogleFonts.nunito(
                       fontWeight: FontWeight.w600,
-                      fontSize: 14,
+                      fontSize: isTabletOrBigger ? 16 : 14,
                       color: Colors.white.withOpacity(0.8),
                     ),
                   );
@@ -65,7 +68,7 @@ class PercentIndicator extends ConsumerWidget {
                 ),
                 style: GoogleFonts.nunito(
                   fontWeight: FontWeight.w800,
-                  fontSize: 20,
+                  fontSize: isTabletOrBigger ? 24 : 20,
                   color: Colors.white.withOpacity(0.8),
                 ),
               ),
