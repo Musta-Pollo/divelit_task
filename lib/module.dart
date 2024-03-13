@@ -15,14 +15,26 @@ class PickStartAndEnd extends _$PickStartAndEnd {
   }
 
   void changeStart(DateTime newStart) {
-    state = state.copyWith(start: newStart);
+    state = state.copyWith(
+      start: newStart,
+      end: newStart.isAfter(state.end)
+          // TODO: Depends on the requirements.
+          ? newStart.add(const Duration(minutes: 5))
+          : state.end,
+    );
   }
 
   void changeEnd(DateTime newEnd) {
-    state = state.copyWith(end: newEnd);
+    state = state.copyWith(
+      end: newEnd,
+      start: state.start.isAfter(newEnd)
+          ? newEnd.subtract(const Duration(minutes: 5))
+          : state.start,
+    );
+    return;
   }
 
-  void changeSliderModeStart() {
+  void _changeSliderModeStart() {
     state = state.copyWith(
         sliderMode: state.percentage == 0.0
             ? SliderMode.startAfterNow
@@ -34,9 +46,16 @@ class PickStartAndEnd extends _$PickStartAndEnd {
   }
 
   void changePercentage(double percentage) {
+    if (state.sliderMode == SliderMode.nothing) _changeSliderModeStart();
     //It is truncated to minutes to eliminate noise
     final now = DateTime.now().truncateToMinute;
-    if (percentage == 0.0) percentage;
+    if (percentage == 0.0) {
+      state = state.copyWith(
+        start: now,
+        end: now.add(const Duration(minutes: 5)),
+      );
+      return;
+    }
     if (state.sliderMode == SliderMode.startBeforeNow) {
       final diff = state.start.difference(now).abs();
       final addToNow = (diff.inMicroseconds * (1 - percentage)) ~/ percentage;
@@ -56,5 +75,21 @@ class PickStartAndEnd extends _$PickStartAndEnd {
         ),
       ));
     }
+  }
+}
+
+@riverpod
+Stream<DateTime> currentTime(CurrentTimeRef ref) async* {
+  //Return call on the start of the next second and then every second
+  final now = DateTime.now();
+  await Future.delayed(Duration(seconds: 60 - now.second));
+  yield DateTime.now();
+  final stream = Stream.periodic(
+    const Duration(minutes: 1),
+    (_) => DateTime.now(),
+  );
+
+  await for (final time in stream) {
+    yield time;
   }
 }

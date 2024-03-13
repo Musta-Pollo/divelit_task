@@ -6,7 +6,21 @@ part of 'module.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$pickStartAndEndHash() => r'23c55c235af5fc405ff6cae250724e6b042d9897';
+String _$currentTimeHash() => r'7d9e4eb788d19ee16ee27579fdf7bd96b384ccff';
+
+/// See also [currentTime].
+@ProviderFor(currentTime)
+final currentTimeProvider = AutoDisposeStreamProvider<DateTime>.internal(
+  currentTime,
+  name: r'currentTimeProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$currentTimeHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef CurrentTimeRef = AutoDisposeStreamProviderRef<DateTime>;
+String _$pickStartAndEndHash() => r'22294c30b139e998d080c2ce047713475fbace30';
 
 /// See also [PickStartAndEnd].
 @ProviderFor(PickStartAndEnd)

@@ -16,7 +16,10 @@ class MyApp extends StatelessWidget {
       title: 'Divelit DU',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xffffa6a6cb),
+          brightness: Brightness.dark,
+        ),
         useMaterial3: true,
       ),
       home: const HomePage(),

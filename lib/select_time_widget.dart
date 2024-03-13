@@ -1,10 +1,25 @@
+import 'package:divelit_task/extensions/datetime_extension.dart';
+import 'package:divelit_task/module.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-enum TimeType { start, end }
+enum TimeType {
+  start,
+  end;
 
-class SelectTimeWidget extends StatelessWidget {
+  String get name {
+    switch (this) {
+      case TimeType.start:
+        return "Start";
+      case TimeType.end:
+        return "End";
+    }
+  }
+}
+
+class SelectTimeWidget extends ConsumerWidget {
   const SelectTimeWidget({
     super.key,
     required this.timeType,
@@ -13,7 +28,9 @@ class SelectTimeWidget extends StatelessWidget {
   final TimeType timeType;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final time = ref.watch(pickStartAndEndProvider.select(
+        (value) => timeType == TimeType.start ? value.start : value.end));
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: 16,
@@ -29,7 +46,7 @@ class SelectTimeWidget extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Text(
-            "Start",
+            timeType.name,
             style: GoogleFonts.nunito(
               fontSize: 16,
               fontWeight: FontWeight.w500,
@@ -38,7 +55,7 @@ class SelectTimeWidget extends StatelessWidget {
           ),
           const Gap(6),
           Text(
-            "12.10.2021 12:00",
+            time.formatted,
             style: GoogleFonts.nunito(
               fontSize: 16,
               fontWeight: FontWeight.w600,
@@ -46,23 +63,57 @@ class SelectTimeWidget extends StatelessWidget {
             ),
           ),
           const Gap(20),
-          Container(
-            decoration: BoxDecoration(
-              // color: const Color.fromARGB(255, 28, 28, 31),
-              borderRadius: BorderRadius.circular(8),
-              color: Colors.white.withOpacity(0.05),
-              border: Border.all(color: const Color(0xffffa6a6cb), width: 1.2),
-            ),
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 8,
-            ),
-            child: Text(
-              "Change",
-              style: GoogleFonts.nunito(
-                fontSize: 14,
-                fontWeight: FontWeight.w700,
-                color: Colors.white,
+          GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: () async {
+              final now = DateTime.now();
+              final newDate = await showDatePicker(
+                  context: context,
+                  currentDate: time,
+                  firstDate: now,
+                  lastDate: DateTime(2030));
+              if (newDate == null || !context.mounted) return;
+              final newTime = await showTimePicker(
+                context: context,
+                initialTime: const TimeOfDay(hour: 12, minute: 0),
+              );
+              if (newTime == null) return;
+              final newTimeCombined = DateTime(
+                newDate.year,
+                newDate.month,
+                newDate.day,
+                newTime.hour,
+                newTime.minute,
+              );
+              if (timeType == TimeType.start) {
+                ref
+                    .read(pickStartAndEndProvider.notifier)
+                    .changeStart(newTimeCombined);
+              } else {
+                ref
+                    .read(pickStartAndEndProvider.notifier)
+                    .changeEnd(newTimeCombined);
+              }
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                // color: const Color.fromARGB(255, 28, 28, 31),
+                borderRadius: BorderRadius.circular(8),
+                color: Colors.white.withOpacity(0.05),
+                border:
+                    Border.all(color: const Color(0xffffa6a6cb), width: 1.2),
+              ),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 8,
+              ),
+              child: Text(
+                "Change",
+                style: GoogleFonts.nunito(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),

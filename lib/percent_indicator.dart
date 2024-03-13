@@ -1,4 +1,6 @@
+import 'package:divelit_task/extensions/datetime_extension.dart';
 import 'package:divelit_task/module.dart';
+import 'package:duration/duration.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,19 +10,22 @@ import 'package:responsive_builder/responsive_builder.dart';
 class PercentIndicator extends ConsumerWidget {
   const PercentIndicator({
     super.key,
+    required this.percentage,
+    required this.duration,
   });
+
+  final double percentage;
+  final Duration duration;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final percentage =
-        ref.watch(pickStartAndEndProvider.select((value) => value.percentage));
     return Column(
       children: <Widget>[
         ResponsiveBuilder(builder: (context, sizingInformation) {
           return Column(
             children: [
               Text(
-                "${percentage.toStringAsPrecision(2)}%",
+                "${(percentage * 100).toStringAsFixed(1)}%",
                 style: GoogleFonts.nunito(
                   fontWeight: FontWeight.w900,
                   fontSize: 40,
@@ -37,11 +42,30 @@ class PercentIndicator extends ConsumerWidget {
                 ),
               ),
               const Gap(4),
+              Consumer(
+                builder: (context, ref, child) {
+                  final _ = ref.watch(currentTimeProvider);
+                  return Text(
+                    DateTime.now().formatted,
+                    style: GoogleFonts.nunito(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                      color: Colors.white.withOpacity(0.8),
+                    ),
+                  );
+                },
+              ),
+              const Gap(16),
               Text(
-                "12.10.2021 12:00",
+                prettyDuration(
+                  duration,
+                  abbreviated: true,
+                  tersity: DurationTersity.minute,
+                  upperTersity: DurationTersity.hour,
+                ),
                 style: GoogleFonts.nunito(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14,
+                  fontWeight: FontWeight.w800,
+                  fontSize: 20,
                   color: Colors.white.withOpacity(0.8),
                 ),
               ),
