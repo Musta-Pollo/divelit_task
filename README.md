@@ -9,3 +9,4 @@
 - The requirements are not clear, so it was more or less free style. In a real scenario, I would ask for more details. And then it would be much more optimalized for that use-case. It would work and look much better.
 - The application was initialy design for mobile and then adapted for desktop.
 - I focused mostly on the architecture, state managemend and clean code. The UI and UX was not my primary focus.
+- In the tracked duration are also included breaks.
