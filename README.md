@@ -1,4 +1,4 @@
-# Divelit DU
+# DU
 
 ## Initial Design From Figma
 
